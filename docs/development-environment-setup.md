@@ -104,6 +104,8 @@ sudo n lts
 ```
 
 #### Postgres
+When connecting to postgres on a vm from the host machine make sure to use
+127.0.0.1 instead of localhost due to ssl errors that you get
 ```bash
 # Install
 sudo apt install -y postgresql-12
