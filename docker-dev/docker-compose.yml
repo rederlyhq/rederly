@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  # databases
+  redis:
+    image: redis:3.2.4
+    restart: always
+    ports:
+      - 6380:6379
+
+  postgres:
+    image: postgres
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_DB: rederly
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    #volumes:
+      # - ./database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql # include if you have a start up script
+
+# services
+  scheduler:
+    build:
+      context: ../../scheduler/
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - redis
+    volumes:
+      - ../../scheduler/src:/code/src
+    container_name: dev-scheduler
+    ports:
+      - 3003:3003
+
+# core proccesses
+  backend:
+    build:
+      context: ../../backend/
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - scheduler
+      - postgres
+    volumes:
+      - ../../backend/src:/app/src
+    container_name: dev-backend
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=rederly
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - AUTH_SESSION_LIFE=24
+      - AUTH_COST_FACTOR=8
+      - AUTH_TOKEN_LIFE=1440
+      - AUTH_FORGOT_PASSWORD_TOKEN_LIFE=1440
+      - AUTH_VERIFY_INSTUTIONAL_EMAIL_TOKEN_LIFE=1440
+      - RENDERER_URL=http://renderer:3000
+      - SERVER_PORT=3001
+      - SERVER_BASE_PATH=/backend-api
+    ports:
+      - 3001:3001
+
+networks:
+  defaults:
+    name: rederly-dev-enviroment
