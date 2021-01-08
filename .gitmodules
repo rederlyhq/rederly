@@ -1,0 +1,12 @@
+[submodule "source/frontend"]
+	path = source/frontend
+	url = git@github.com:rederly/frontend.git
+[submodule "source/backend"]
+	path = source/backend
+	url = git@github.com:rederly/backend.git
+[submodule "source/renderer"]
+	path = source/renderer
+	url = git@github.com:rederly/renderer.git
+[submodule "source/library-browser"]
+	path = source/library-browser
+	url = git@github.com:rederly/library-browser.git
