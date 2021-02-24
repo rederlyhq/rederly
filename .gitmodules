@@ -1,15 +1,15 @@
 [submodule "source/frontend"]
 	path = source/frontend
-	url = /frontend.git
+	url = ./frontend.git
 [submodule "source/backend"]
 	path = source/backend
-	url = /backend.git
+	url = ./backend.git
 [submodule "source/renderer"]
 	path = source/renderer
-	url = /renderer.git
+	url = ./renderer.git
 [submodule "source/library-browser"]
 	path = source/library-browser
-	url = /library-browser.git
+	url = ./library-browser.git
 [submodule "source/def-parser"]
 	path = source/def-parser
-	url = /def-parser.git
+	url = ./def-parser.git
