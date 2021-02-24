@@ -10,3 +10,6 @@
 [submodule "source/library-browser"]
 	path = source/library-browser
 	url = git@github.com:rederly/library-browser.git
+[submodule "source/def-parser"]
+	path = source/def-parser
+	url = git@github.com:rederlyhq/def-parser.git
