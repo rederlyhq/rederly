@@ -1,15 +1,15 @@
 [submodule "source/frontend"]
 	path = source/frontend
-	url = ./frontend.git
+	url = git@github.com:./frontend.git
 [submodule "source/backend"]
 	path = source/backend
-	url = ./backend.git
+	url = git@github.com:./backend.git
 [submodule "source/renderer"]
 	path = source/renderer
-	url = ./renderer.git
+	url = git@github.com:./renderer.git
 [submodule "source/library-browser"]
 	path = source/library-browser
-	url = ./library-browser.git
+	url = git@github.com:./library-browser.git
 [submodule "source/def-parser"]
 	path = source/def-parser
-	url = ./def-parser.git
+	url = git@github.com:./def-parser.git
