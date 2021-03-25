@@ -13,3 +13,6 @@
 [submodule "source/def-parser"]
 	path = source/def-parser
 	url = git@github.com:rederlyhq/def-parser.git
+[submodule "source/rederly-utils"]
+	path = source/rederly-utils
+	url = git@github.com:rederlyhq/rederly-utils.git
