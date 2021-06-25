@@ -7,3 +7,13 @@
 # git submodule add $GIT_URL $PATH
 git submodule add git@github.com:rederlyhq/rederly-utils.git source/rederly-utils
 ```
+# Updating
+```bash
+git submodule update --init --recursive
+
+# From dev
+git submodule foreach --recursive "git fetch && (git checkout dev || git checkout master || git checkout main) && git pull"
+
+# From master
+git submodule foreach --recursive "git fetch && (git checkout master || git checkout main) && git pull"
+```
