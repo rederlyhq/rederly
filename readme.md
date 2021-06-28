@@ -16,4 +16,7 @@ git submodule foreach --recursive "git fetch && (git checkout dev || git checkou
 
 # From master
 git submodule foreach --recursive "git fetch && (git checkout master || git checkout main) && git pull"
+
+# From docker
+git submodule foreach --recursive "git fetch && (git checkout docker || git checkout master || git checkout main) && git pull"
 ```

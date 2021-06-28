@@ -16,3 +16,12 @@
 [submodule "source/rederly-utils"]
 	path = source/rederly-utils
 	url = git@github.com:rederlyhq/rederly-utils.git
+[submodule "source/scheduler"]
+	path = source/scheduler
+	url = git@github.com:rederlyhq/scheduler.git
+[submodule "source/rederly-course-export"]
+	path = source/rederly-course-export
+	url = git@github.com:rederlyhq/rederly-course-export.git
+[submodule "source/bulk-pdf-export"]
+	path = source/bulk-pdf-export
+	url = git@github.com:rederlyhq/bulk-pdf-export.git
