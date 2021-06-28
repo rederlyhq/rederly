@@ -75,6 +75,17 @@ services:
       - type: bind
         source: ./configurations/bulk-pdf-export.env
         target: /app/.env
+  renderer:
+    container_name: rederly_renderer
+    build: '../source/renderer'
+    volumes:
+      - type: bind
+        source: ./renderer-data/private
+        target: /usr/app/private
+      - type: bind
+        source: ./renderer-data/webwork-open-problem-library
+        target: /usr/app/webwork-open-problem-library
+    
   
   frontend-build:
     build:
@@ -90,14 +101,17 @@ services:
     ports:
       - "3000:80"
     container_name: rederly_proxy
+    volumes:
+      - type: bind
+        source: ../source/renderer/lib/WeBWorK/htdocs
+        target: /usr/share/nginx/html/webwork2_files
     # This is for quicker debugging:
     # 1. Uncomment the rederly.nginx.conf volume
     # 2. Make changes to the file
     # 3. Reload nginx: `docker exec -it rederly_proxy nginx -s reload`
-    # volumes:
-    #   - type: bind
-    #     source: ./nginx/rederly.nginx.conf
-    #     target: /etc/nginx/conf.d/rederly.nginx.conf
+      # - type: bind
+      #   source: ./nginx/rederly.nginx.conf
+      #   target: /etc/nginx/conf.d/rederly.nginx.conf
 
 
 
