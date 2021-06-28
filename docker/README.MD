@@ -1,0 +1,45 @@
+# Backend
+## Initialize Database from backend
+Since the db is running but not ready at startup you should not run with `DB_SYNC=true`.  
+
+Before initializing the database set the following env variables
+* PGHOST
+* PGPASSWORD
+* PGUSER
+* PGDATABASE
+* PGPORT
+
+To initialize the database:
+```bash
+# Reset the database
+# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db dropdb "rederly"
+# Initialize the database
+docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db createdb "rederly"
+# Have the backend initialize db schema
+docker exec -it -e DB_SYNC=true rederly_backend npm run cli:built noop
+# Have the backend generate migration table (this will fail if you are running on initial database)
+docker exec -it rederly_backend npm run sequelize:built:migrations
+# Restore static data (see details in `Backup static data`)
+cat resources/initialData.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+# Create a university (file may need modification)
+cat resources/university.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+# Create blank curriculum (if you want that)
+cat resources/curriculum.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+```
+
+## Backup static data
+I set the following environment variables and then ran the below command
+* PGHOST
+* PGPASSWORD
+* PGUSER
+* PGDATABASE
+* PGPORT
+```bash
+pg_dump -a -x -Fp -O -t '"SequelizeMeta"' -t 'topic_type' -t 'permission' > resources/initialData.sql
+```
+
+## Migrations
+To run the database migrations use the below command after `docker-compose up`
+```bash
+docker exec -it rederly_backend npm run sequelize:built:migrations
+```

@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  db:
+    container_name: rederly_db
+    image: postgres:12.6
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "65432:5432"
+      - "5432"
+  backend:
+    build: ../source/backend
+    container_name: rederly_backend
+    volumes:
+      - type: bind
+        source: ./configurations/backend.env
+        target: /rederly/.env
+      - type: bind
+        source: ../source/backend/.sequelizerc
+        target: /rederly/.sequelizerc
+    depends_on:
+      - db
+  frontend-build:
+    build:
+      context: ../source/frontend
+      dockerfile: build.Dockerfile
+  proxy:
+    build: ./nginx
+    depends_on:
+      - frontend-build
+      - backend
+    ports:
+      - "3000:80"
+    container_name: rederly_proxy
+  # scheduler-redis:
+  #   image: "redis:alpine"
+volumes:
+  dbdata:
