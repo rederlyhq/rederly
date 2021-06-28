@@ -90,6 +90,15 @@ services:
     ports:
       - "3000:80"
     container_name: rederly_proxy
+    # This is for quicker debugging:
+    # 1. Uncomment the rederly.nginx.conf volume
+    # 2. Make changes to the file
+    # 3. Reload nginx: `docker exec -it rederly_proxy nginx -s reload`
+    # volumes:
+    #   - type: bind
+    #     source: ./nginx/rederly.nginx.conf
+    #     target: /etc/nginx/conf.d/rederly.nginx.conf
+
 
 
 volumes:
