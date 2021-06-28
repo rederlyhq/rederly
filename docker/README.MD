@@ -47,3 +47,18 @@ To run the database migrations use the below command after `docker-compose up`
 ```bash
 docker exec -it rederly_backend npm run sequelize:built:migrations
 ```
+
+# Library Browser
+To set up the database:
+```bash
+# First you should start up the system
+docker-compose up
+
+# Reset the database
+# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db dropdb "opl"
+
+# Initialize the database
+docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db createdb "opl"
+# Restore static data (see details in `Backup static data`)
+cat ../source/library-browser/resources/opl-data.psql.backup | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db pg_restore -x -Fc -O -d "opl"
+```

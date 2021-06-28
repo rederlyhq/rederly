@@ -29,25 +29,17 @@ services:
     image: "redis:alpine"
 
   scheduler:
+    container_name: rederly_scheduler
     build: ../source/scheduler
     depends_on:
       - scheduler-redis
     environment:
       REDIS_HOST: scheduler-redis
 
-  library-browser-db:
-    container_name: rederly_library-browser-db
-    image: postgres:12.6
-    volumes:
-      - "librarydbdata:/var/lib/postgresql/data"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-
   library-browser:
     build: ../source/library-browser
     depends_on:
-      - library-browser-db
+      - db
     volumes:
       - type: bind
         source: ./configurations/library-browser.env
@@ -117,4 +109,3 @@ services:
 
 volumes:
   dbdata:
-  librarydbdata:
