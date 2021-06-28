@@ -11,6 +11,7 @@ services:
     ports:
       - "65432:5432"
       - "5432"
+
   backend:
     build: ../source/backend
     container_name: rederly_backend
@@ -23,19 +24,59 @@ services:
         target: /rederly/.sequelizerc
     depends_on:
       - db
+
+  scheduler-redis:
+    image: "redis:alpine"
+
+  scheduler:
+    build: ../source/scheduler
+    depends_on:
+      - scheduler-redis
+    environment:
+      REDIS_HOST: scheduler-redis
+
+  library-browser-db:
+    container_name: rederly_library-browser-db
+    image: postgres:12.6
+    volumes:
+      - "librarydbdata:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+  library-browser:
+    build: ../source/library-browser
+    depends_on:
+      - library-browser-db
+
+  rederly-course-export:
+    build:
+      context: ../source/rederly-course-export
+      dockerfile: Dockerfile.standalone
+    depends_on:
+      - db
+
+  bulk-pdf-export:
+    build: '../source/bulk-pdf-export'
+    cap_add: 
+      - SYS_ADMIN
+
   frontend-build:
     build:
       context: ../source/frontend
       dockerfile: build.Dockerfile
+
   proxy:
     build: ./nginx
     depends_on:
       - frontend-build
       - backend
+      - library-browser
     ports:
       - "3000:80"
     container_name: rederly_proxy
-  # scheduler-redis:
-  #   image: "redis:alpine"
+
+
 volumes:
   dbdata:
+  librarydbdata:

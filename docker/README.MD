@@ -2,17 +2,14 @@
 ## Initialize Database from backend
 Since the db is running but not ready at startup you should not run with `DB_SYNC=true`.  
 
-Before initializing the database set the following env variables
-* PGHOST
-* PGPASSWORD
-* PGUSER
-* PGDATABASE
-* PGPORT
-
 To initialize the database:
 ```bash
+# First you should start up the system
+docker-compose up
+
 # Reset the database
 # docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db dropdb "rederly"
+
 # Initialize the database
 docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db createdb "rederly"
 # Have the backend initialize db schema
