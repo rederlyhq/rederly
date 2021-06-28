@@ -1,3 +1,10 @@
+# Proxy
+Add `rederly_proxy` to host file. This is because some things (like auto submit and email locations) depend on requesting url.  
+Instructions for editing host file is located here: https://docs.rackspace.com/support/how-to/modify-your-hosts-file/  
+On unix based systems this is located at `/etc/hosts`  
+On windows this file is located at `c:\Windows\System32\Drivers\etc\hosts`  
+Added this line: `127.0.0.1 rederly_proxy`
+
 # Backend
 ## Initialize Database from backend
 Since the db is running but not ready at startup you should not run with `DB_SYNC=true`.  
