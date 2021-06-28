@@ -48,19 +48,34 @@ services:
     build: ../source/library-browser
     depends_on:
       - library-browser-db
+    volumes:
+      - type: bind
+        source: ./configurations/library-browser.env
+        target: /rederly/.env
+
 
   rederly-course-export:
+    container_name: rederly_rederly-course-export
     build:
       context: ../source/rederly-course-export
       dockerfile: Dockerfile.standalone
     depends_on:
       - db
+    volumes:
+      - type: bind
+        source: ./configurations/rederly-course-export.env
+        target: /rederly-course-export-standalone/.env
+  
 
   bulk-pdf-export:
     build: '../source/bulk-pdf-export'
     cap_add: 
       - SYS_ADMIN
-
+    volumes:
+      - type: bind
+        source: ./configurations/bulk-pdf-export.env
+        target: /app/.env
+  
   frontend-build:
     build:
       context: ../source/frontend
