@@ -79,3 +79,7 @@ pip install awscli-local
 # Restart backend, which requires everything that talks to it to be restared -- todo fix and make aws mocks peristent
 docker restart rederly_backend
 ```
+
+# Known issues with local run
+For some reason localstack is dropping /exports, so when you do a build pdfs and hit download you need to prefix exports to the base url.
+Example: `http://rederly_proxy:3000/6f204bc3-d3e2-47f0-8450-83a4a5c0f453/2/2_1624984616964-solutions.zip` ==> `http://rederly_proxy:3000/exports/6f204bc3-d3e2-47f0-8450-83a4a5c0f453/2/2_1624984616964-solutions.zip`

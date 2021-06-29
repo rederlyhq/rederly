@@ -149,6 +149,7 @@ services:
         aliases:
           - attachments.localstack
           - rederly-exports-dev.localstack
+          - exports.localstack
           - localstack
 
 volumes:

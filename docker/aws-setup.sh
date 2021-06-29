@@ -12,7 +12,9 @@ function fail() {
 }
 
 awslocal s3api create-bucket --bucket attachments
-awslocal s3api create-bucket --bucket rederly-exports-dev
+# The bucket should be this value but localstacks is doing something weird with the key... have to use the base url `exports`
+# awslocal s3api create-bucket --bucket rederly-exports-dev
+awslocal s3api create-bucket --bucket exports
 cd ../source/presigned_lambda
 [ -f api-handler.zip ] && rm api-handler.zip
 npm install
