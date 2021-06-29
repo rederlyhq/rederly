@@ -1,7 +1,6 @@
 version: "3.9"
 services:
   db:
-    container_name: rederly_db
     image: postgres:12.6
     volumes:
       - "dbdata:/var/lib/postgresql/data"
@@ -14,7 +13,6 @@ services:
 
   backend:
     build: ../source/backend
-    container_name: rederly_backend
     volumes:
       - type: bind
         source: ./configurations/backend.env
@@ -29,7 +27,6 @@ services:
     image: "redis:alpine"
 
   scheduler:
-    container_name: rederly_scheduler
     build: ../source/scheduler
     depends_on:
       - scheduler-redis
@@ -47,7 +44,6 @@ services:
 
 
   rederly-course-export:
-    container_name: rederly_rederly-course-export
     build:
       context: ../source/rederly-course-export
       dockerfile: Dockerfile.standalone
@@ -63,7 +59,6 @@ services:
       
 
   bulk-pdf-export:
-    container_name: rederly_bulk-pdf-export
     build: '../source/bulk-pdf-export'
     cap_add: 
       - SYS_ADMIN
@@ -76,7 +71,6 @@ services:
       localstacknet:    
 
   renderer:
-    container_name: rederly_renderer
     build: '../source/renderer'
     volumes:
       - type: bind
@@ -100,7 +94,6 @@ services:
       - library-browser
     ports:
       - "3000:80"
-    container_name: rederly_proxy
     volumes:
       - type: bind
         source: ../source/renderer/lib/WeBWorK/htdocs

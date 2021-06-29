@@ -15,20 +15,20 @@ To initialize the database:
 docker-compose up
 
 # Reset the database
-# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db dropdb "rederly"
+# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db_1 dropdb "rederly"
 
 # Initialize the database
-docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db createdb "rederly"
+docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db_1 createdb "rederly"
 # Have the backend initialize db schema
-docker exec -it -e DB_SYNC=true rederly_backend npm run cli:built noop
+docker exec -it -e DB_SYNC=true rederly_backend_1 npm run cli:built noop
 # Have the backend generate migration table (this will fail if you are running on initial database)
-docker exec -it rederly_backend npm run sequelize:built:migrations
+docker exec -it rederly_backend_1 npm run sequelize:built:migrations
 # Restore static data (see details in `Backup static data`)
-cat resources/initialData.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+cat resources/initialData.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db_1 psql
 # Create a university (file may need modification)
-cat resources/university.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+cat resources/university.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db_1 psql
 # Create blank curriculum (if you want that)
-cat resources/curriculum.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db psql
+cat resources/curriculum.sql | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" -e PGDATABASE="rederly" rederly_db_1 psql
 ```
 
 ## Backup static data
@@ -45,7 +45,7 @@ pg_dump -a -x -Fp -O -t '"SequelizeMeta"' -t 'topic_type' -t 'permission' > reso
 ## Migrations
 To run the database migrations use the below command after `docker-compose up`
 ```bash
-docker exec -it rederly_backend npm run sequelize:built:migrations
+docker exec -it rederly_backend_1 npm run sequelize:built:migrations
 ```
 
 # Library Browser
@@ -55,12 +55,12 @@ To set up the database:
 docker-compose up
 
 # Reset the database
-# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db dropdb "opl"
+# docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db_1 dropdb "opl"
 
 # Initialize the database
-docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db createdb "opl"
+docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db_1 createdb "opl"
 # Restore static data (see details in `Backup static data`)
-cat ../source/library-browser/resources/opl-data.psql.backup | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db pg_restore -x -Fc -O -d "opl"
+cat ../source/library-browser/resources/opl-data.psql.backup | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db_1 pg_restore -x -Fc -O -d "opl"
 ```
 
 # AWS Mocking
@@ -77,7 +77,7 @@ pip install awscli-local
 ./aws-setup.sh
 # Copy the url from there and put it in the backend config file
 # Restart backend, which requires everything that talks to it to be restared -- todo fix and make aws mocks peristent
-docker restart rederly_backend
+docker restart rederly_backend_1
 ```
 
 # Known issues with local run
