@@ -60,6 +60,7 @@ services:
   
 
   bulk-pdf-export:
+    container_name: rederly_bulk-pdf-export
     build: '../source/bulk-pdf-export'
     cap_add: 
       - SYS_ADMIN
@@ -67,6 +68,10 @@ services:
       - type: bind
         source: ./configurations/bulk-pdf-export.env
         target: /app/.env
+    networks:
+      default:
+      localstacknet:    
+
   renderer:
     container_name: rederly_renderer
     build: '../source/renderer'
@@ -101,11 +106,50 @@ services:
     # 1. Uncomment the rederly.nginx.conf volume
     # 2. Make changes to the file
     # 3. Reload nginx: `docker exec -it rederly_proxy nginx -s reload`
-      # - type: bind
-      #   source: ./nginx/rederly.nginx.conf
-      #   target: /etc/nginx/conf.d/rederly.nginx.conf
-
-
+      - type: bind
+        source: ./nginx/rederly.nginx.conf
+        target: /etc/nginx/conf.d/rederly.nginx.conf
+    # networks:
+    #   default:
+    #   localstacknet:
+    #     aliases:
+    #       - attachments.localstack
+    #       - localstack
+    
+  localstack:
+    # container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    # network_mode: bridge
+    ports:
+      # - "53:53"
+    #   - "53:53/udp"
+    #   - "443:443"
+      # - "4566:4566"
+    #   - "4571:4571"
+    #   - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+      - "4566-4583:4566-4583"
+    environment:
+      - SERVICES=${SERVICES-s3,lambda,apigateway }
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-lambda }
+      - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR}
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      default:
+      localstacknet:
+        aliases:
+          - attachments.localstack
+          - rederly-exports-dev.localstack
+          - localstack
 
 volumes:
   dbdata:
+networks:
+  localstacknet:

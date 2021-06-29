@@ -62,3 +62,20 @@ docker exec -it -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db created
 # Restore static data (see details in `Backup static data`)
 cat ../source/library-browser/resources/opl-data.psql.backup | docker exec -i -e PGPASSWORD='password' -e PGUSER="postgres" rederly_db pg_restore -x -Fc -O -d "opl"
 ```
+
+# AWS Mocking
+We are using localstack to mock out aws services.
+https://gist.github.com/crypticmind/c75db15fd774fe8f53282c3ccbe3d7ad
+## Tools
+https://github.com/localstack/awscli-local
+```bash
+pip install awscli-local
+```
+
+## Attachments
+```
+./aws-setup.sh
+# Copy the url from there and put it in the backend config file
+# Restart backend, which requires everything that talks to it to be restared -- todo fix and make aws mocks peristent
+docker restart rederly_backend
+```
