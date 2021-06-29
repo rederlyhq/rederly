@@ -57,7 +57,10 @@ services:
       - type: bind
         source: ./configurations/rederly-course-export.env
         target: /rederly-course-export-standalone/.env
-  
+      - type: bind
+        source: ./renderer-data
+        target: /renderer-data
+      
 
   bulk-pdf-export:
     container_name: rederly_bulk-pdf-export
