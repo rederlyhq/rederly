@@ -25,3 +25,6 @@
 [submodule "source/bulk-pdf-export"]
 	path = source/bulk-pdf-export
 	url = git@github.com:rederlyhq/bulk-pdf-export.git
+[submodule "source/presigned_lambda"]
+	path = source/presigned_lambda
+	url = git@github.com:rederlyhq/presigned_lambda.git
