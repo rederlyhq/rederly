@@ -131,7 +131,7 @@ services:
     environment:
       - SERVICES=${SERVICES-s3,lambda,apigateway }
       - DEBUG=${DEBUG- }
-      - DATA_DIR=${DATA_DIR- }
+      - DATA_DIR=/tmp/localstack/data
       - PORT_WEB_UI=${PORT_WEB_UI- }
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-lambda }
       - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY- }
@@ -139,7 +139,9 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - HOST_TMP_FOLDER=${TMPDIR}
     volumes:
-      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      # Of what we are using this only supports s3 (not lambda or apigateway)
+      - "localstack-vol:/tmp/localstack"
+      # - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       default:
@@ -151,5 +153,6 @@ services:
 
 volumes:
   dbdata:
+  localstack-vol:
 networks:
   localstacknet:
